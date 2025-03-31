@@ -20,9 +20,6 @@ class Colorant:
         threading.Thread(target=self.run, daemon=True).start()
         self.toggled = False
 
-        if not os.path.exists("screen"):
-            os.makedirs("screen")
-
     def toggle(self):
         self.toggled = not self.toggled
         time.sleep(0.2)
@@ -54,12 +51,6 @@ class Colorant:
             x_diff = cX - self.grabber.grabzone // 2
             y_diff = cY - self.grabber.grabzone // 2
             self.arduinomouse.move(x_diff * 0.2, y_diff * 0.2)
-            
-
-        # timestamp = time.strftime("%Y%m%d-%H%M%S")
-        # filename = f"screen/screenshot_{timestamp}.png"
-        # cv2.imwrite(filename, dilated)
-        # print(f"Ảnh đã lưu: {filename}")
 
     def close(self):
         if hasattr(self, 'arduinomouse'):

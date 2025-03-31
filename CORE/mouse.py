@@ -4,7 +4,7 @@ import random
 import time
 import sys
 from termcolor import colored
-# from GUI.main_app import MainAppFrame
+
 
 class ArduinoMouse:
     def __init__(self):
@@ -16,7 +16,7 @@ class ArduinoMouse:
             self.serial_port.open()
         except serial.SerialException:
             print(colored('[Error]', 'red'), colored('Valorant Aim Bot is already open or the serial port is being used by another app.', 'white'))
-            # sys.exit()
+            sys.exit()
 
     def find_serial_port(self):
         port = next((port for port in serial.tools.list_ports.comports() if "USB Serial Device" in port.description), None)
@@ -24,7 +24,7 @@ class ArduinoMouse:
             return port.device
         else:
             print(colored('[Error]', 'red'), colored('No serial port found. Check your Arduino and try again.', 'white'))
-            # sys.exit()
+            sys.exit()
 
     def move(self, x, y):
         x = x + 256 if x < 0 else x
