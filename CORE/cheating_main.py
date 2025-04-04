@@ -6,26 +6,17 @@ from .colorant import Colorant
 
 TOGGLE_KEY = 'F1'
 FOV = 100
-CENTER_X, CENTER_Y = 2560 // 2, 1440 // 2
+CENTER_X, CENTER_Y = 1920 // 2, 1080 // 2
+MOUSE_SENSITIVITY = 0.2
 
-def cheating_main():
-    os.system('title Colorant')
-    colorant = Colorant(CENTER_X - FOV // 2, CENTER_Y - FOV // 2, FOV)
-    print(colored('''
-                        
-        ██╗░░░██╗░█████╗░██╗░░░░░░█████╗░██████╗░░█████╗░███╗░░██╗████████╗
-        ██║░░░██║██╔══██╗██║░░░░░██╔══██╗██╔══██╗██╔══██╗████╗░██║╚══██╔══╝
-        ╚██╗░██╔╝███████║██║░░░░░██║░░██║██████╔╝███████║██╔██╗██║░░░██║░░░
-        ░╚████╔╝░██╔══██║██║░░░░░██║░░██║██╔══██╗██╔══██║██║╚████║░░░██║░░░
-        ░░╚██╔╝░░██║░░██║███████╗╚█████╔╝██║░░██║██║░░██║██║░╚███║░░░██║░░░
-        ░░░╚═╝░░░╚═╝░░╚═╝╚══════╝░╚════╝░╚═╝░░╚═╝╚═╝░░╚═╝╚═╝░░╚══╝░░░╚═╝░░░   
-                                              Valorant AIMBOT - v1.0 - Develop by Ant team''', 'magenta'))
-    print()
+def cheating_main(toggle_key=TOGGLE_KEY, fov=FOV, center_x=CENTER_X, center_y=CENTER_Y, mouse_sensitivity=MOUSE_SENSITIVITY, border_color='purple', hold_key=0x06):
+    os.system('title Valorant ANT BOT')
+    colorant = Colorant(center_x - FOV // 2, center_y - fov // 2, fov, mouse_sensitivity, border_color, hold_key)
     status = 'Disabled'
     
     try:
         while True:
-            if keyboard.is_pressed(TOGGLE_KEY):
+            if keyboard.is_pressed(toggle_key):
                 colorant.toggle()
                 status = 'Enabled ' if colorant.toggled else 'Disabled'
             print(f'\r{colored("[Status]", "green")} {colored(status, "white")}', end='')

@@ -1,4 +1,5 @@
 import os
+from typing import Literal
 import cv2
 import numpy as np
 import threading
@@ -10,18 +11,32 @@ from .mouse import ArduinoMouse
 
 
 class Colorant:
-    LOWER_COLOR = np.array([140, 110, 150])
-    UPPER_COLOR = np.array([150, 195, 255])
-    THRESHOLD = 50
+    PURPLE_LOWER_COLOR = np.array([140, 110, 150])
+    PURPLE_UPPER_COLOR = np.array([150, 195, 255])
 
-    def __init__(self, x, y, grabzone):
+    RED_LOWER_COLOR = np.array([165, 100, 100])
+    RED_UPPER_COLOR = np.array([180, 255, 255])
+
+    YELLOW_LOWER_COLOR = np.array([20, 150, 100])
+    YELLOW_UPPER_COLOR = np.array([40, 255, 255])
+
+    def __init__(self, x, y, grabzone, mouse_sensitivity, border_color: Literal["purple", "red", "yellow"], hold_key):
         self.arduinomouse = ArduinoMouse()
         self.grabber = ScreenCapture(x, y, grabzone)
+        self.mouse_sensitivity = mouse_sensitivity
+        self.hold_key = hold_key
+        if border_color == "purple":
+            self.LOWER_COLOR = self.PURPLE_LOWER_COLOR
+            self.UPPER_COLOR = self.PURPLE_UPPER_COLOR
+        elif border_color == "red":
+            self.LOWER_COLOR = self.RED_LOWER_COLOR
+            self.UPPER_COLOR = self.RED_UPPER_COLOR
+        elif border_color == "yellow":
+            self.LOWER_COLOR = self.YELLOW_LOWER_COLOR
+            self.UPPER_COLOR = self.YELLOW_UPPER_COLOR
         threading.Thread(target=self.run, daemon=True).start()
         self.toggled = False
 
-        if not os.path.exists("screen"):
-            os.makedirs("screen")
 
     def toggle(self):
         self.toggled = not self.toggled
@@ -29,9 +44,7 @@ class Colorant:
 
     def run(self):
         while True:
-            if win32api.GetAsyncKeyState(0x06) < 0 and self.toggled:
-                self.process("move")
-            elif win32api.GetAsyncKeyState(0x05) < 0 and self.toggled:
+            if win32api.GetAsyncKeyState(self.hold_key) < 0 and self.toggled:
                 self.process("move")
 
     def process(self, action):
@@ -53,13 +66,7 @@ class Colorant:
             cY = y + 9
             x_diff = cX - self.grabber.grabzone // 2
             y_diff = cY - self.grabber.grabzone // 2
-            self.arduinomouse.move(x_diff * 0.2, y_diff * 0.2)
-            
-
-        # timestamp = time.strftime("%Y%m%d-%H%M%S")
-        # filename = f"screen/screenshot_{timestamp}.png"
-        # cv2.imwrite(filename, dilated)
-        # print(f"Ảnh đã lưu: {filename}")
+            self.arduinomouse.move(x_diff * self.mouse_sensitivity, y_diff * self.mouse_sensitivity)
 
     def close(self):
         if hasattr(self, 'arduinomouse'):
