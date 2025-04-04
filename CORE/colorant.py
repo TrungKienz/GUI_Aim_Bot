@@ -37,7 +37,10 @@ class Colorant:
         threading.Thread(target=self.run, daemon=True).start()
         self.toggled = False
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2bf25f9bbc42197e92023d77541f89c3d81d34b5
     def toggle(self):
         self.toggled = not self.toggled
         time.sleep(0.2)
@@ -66,7 +69,11 @@ class Colorant:
             cY = y + 9
             x_diff = cX - self.grabber.grabzone // 2
             y_diff = cY - self.grabber.grabzone // 2
+<<<<<<< HEAD
             self.arduinomouse.move(x_diff * self.mouse_sensitivity, y_diff * self.mouse_sensitivity)
+=======
+            self.arduinomouse.move(x_diff * 0.2, y_diff * 0.2)
+>>>>>>> 2bf25f9bbc42197e92023d77541f89c3d81d34b5
 
     def close(self):
         if hasattr(self, 'arduinomouse'):
