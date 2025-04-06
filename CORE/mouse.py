@@ -4,10 +4,6 @@ import random
 import time
 import sys
 from termcolor import colored
-<<<<<<< HEAD
-=======
-
->>>>>>> 2bf25f9bbc42197e92023d77541f89c3d81d34b5
 
 class ArduinoMouse:
     def __init__(self):
